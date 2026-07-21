@@ -16,3 +16,7 @@ venv/
 # OS
 Thumbs.db
 .DS_Store
+
+# Temp generated
+project/b64_encoded.txt
+project/generate_single_cell.py
