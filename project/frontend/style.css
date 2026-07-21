@@ -1,0 +1,364 @@
+/* ───────── Reset & Variables ───────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0e0e1a;
+  --card: #16162a;
+  --border: #2a2a4a;
+  --primary: #6c5ce7;
+  --primary-hover: #5a4bd1;
+  --text: #e4e4ee;
+  --text-dim: #9292b0;
+  --success: #00b894;
+  --error: #d63031;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  --mono: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 48px 20px 80px;
+}
+
+/* ───────── Container ───────── */
+.container {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* ───────── Header ───────── */
+header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+
+header p {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+/* ───────── Step Card ───────── */
+.step {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 14px;
+  overflow: hidden;
+  display: none;
+  animation: fadeUp 0.3s ease;
+}
+
+.step.active {
+  display: block;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: rgba(108, 92, 231, 0.04);
+  border-bottom: 1px solid var(--border);
+}
+
+.step-head h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.step-body {
+  padding: 20px;
+}
+
+/* ───────── Badge ───────── */
+.badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.badge-progress {
+  background: #fdcb6e;
+  color: #2d3436;
+}
+
+.badge-success {
+  background: var(--success);
+}
+
+.badge-error {
+  background: var(--error);
+}
+
+.error-head .badge {
+  background: var(--error);
+}
+
+/* ───────── Hint ───────── */
+.hint {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+
+.hint strong {
+  color: var(--text);
+}
+
+/* ───────── Row ───────── */
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+/* ───────── Inputs ───────── */
+input[type="text"] {
+  flex: 1;
+  padding: 11px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input[type="text"]:focus {
+  border-color: var(--primary);
+}
+
+input[type="file"] {
+  flex: 1;
+  padding: 9px 12px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+input[type="file"]:hover,
+input[type="file"]:focus {
+  border-color: var(--primary);
+}
+
+/* ───────── Buttons ───────── */
+.btn {
+  padding: 11px 22px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #3d3d5e;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ───────── Progress ───────── */
+.progress-wrap {
+  margin-bottom: 18px;
+}
+
+.bar-track {
+  width: 100%;
+  height: 10px;
+  background: var(--bg);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), #a29bfe);
+  border-radius: 5px;
+  transition: width 0.4s ease;
+}
+
+.bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+#progress-pct {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* ───────── Log ───────── */
+.log-box {
+  margin-top: 12px;
+}
+
+.log-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+#log-list {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+
+#log-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+#log-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.log-line {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 1px 0;
+}
+
+/* ───────── Success ───────── */
+.success-block {
+  text-align: center;
+  padding: 16px 0 20px;
+}
+
+.success-icon {
+  display: inline-flex;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--success);
+  color: #fff;
+  font-size: 1.8rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.success-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--success);
+}
+
+/* ───────── Error ───────── */
+.error-msg {
+  padding: 14px 16px;
+  background: rgba(214, 48, 49, 0.09);
+  border: 1px solid rgba(214, 48, 49, 0.28);
+  border-radius: var(--radius-sm);
+  color: #ff7675;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin-bottom: 14px;
+  word-break: break-word;
+}
+
+/* ───────── Media ───────── */
+@media (max-width: 540px) {
+  body {
+    padding: 24px 12px;
+  }
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .row {
+    flex-direction: column;
+  }
+  .step-head {
+    padding: 12px 14px;
+  }
+  .step-body {
+    padding: 14px;
+  }
+}

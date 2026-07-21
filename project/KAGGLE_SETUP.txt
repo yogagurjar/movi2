@@ -1,0 +1,111 @@
+========================================================================
+  VIDEO GENERATOR — KAGGLE NOTEBOOK SETUP
+========================================================================
+Copy & paste each cell below into its own Kaggle Notebook cell.
+
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+Alternatively, open the file on the right-hand file browser in Kaggle,
+navigate to /kaggle/working/ and upload all files from the project/
+folder manually.
+
+Simplest approach: upload the entire project/ folder to Kaggle, then
+run only Cell 3 and Cell 4 below (with your ngrok token).
+
+========================================================================
+
+CELL 1 — Install dependencies
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+
+!pip install -q fastapi uvicorn python-multipart gdown openai-whisper pyngrok nest-asyncio
+
+import subprocess, sys
+try:
+    subprocess.run(["ffmpeg", "-version"], capture_output=True, check=True)
+    print("FFmpeg OK")
+except Exception:
+    print("FFmpeg missing — Kaggle should have it pre-installed")
+    sys.exit(1)
+
+========================================================================
+
+CELL 2 — Create project & write source files
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+
+import os, json
+from pathlib import Path
+
+BASE = Path("/kaggle/working/project")
+for d in ["frontend", "downloads", "transcript", "scene_json", "screenshots", "output", "temp"]:
+    (BASE / d).mkdir(parents=True, exist_ok=True)
+
+# ----- app.py -----
+(BASE / "app.py").write_text(open("/kaggle/working/project/app.py").read() if (BASE / "app.py").exists() else "")
+
+# ----- frontend -----
+for fname in ("index.html", "style.css", "script.js"):
+    (BASE / "frontend" / fname).write_text(open(f"/kaggle/working/project/frontend/{fname}").read() if (BASE / "frontend" / fname).exists() else "")
+
+print("Files written to", BASE)
+
+"""
+NOTE: If you uploaded the project/ folder to Kaggle manually,
+      this cell will still work because it reads the existing files.
+      If the files don't exist yet, upload them first via the
+      Kaggle file browser (right-hand panel).
+"""
+
+========================================================================
+
+CELL 3 — Set Ngrok auth token (REQUIRED)
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+
+from pyngrok import ngrok
+
+# ═══════════════════════════════════════════════════════════════════════
+# >>>  PASTE YOUR NGROK AUTH TOKEN BELOW  <<<
+#    Get it free at: https://dashboard.ngrok.com/get-started/your-authtoken
+# ═══════════════════════════════════════════════════════════════════════
+NGROK_AUTH_TOKEN = ""
+
+if NGROK_AUTH_TOKEN:
+    ngrok.set_auth_token(NGROK_AUTH_TOKEN)
+    print("Ngrok auth token set.")
+else:
+    print("WARNING: Set NGROK_AUTH_TOKEN above before running Cell 4.")
+
+========================================================================
+
+CELL 4 — Run the application
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+
+import sys, os
+sys.path.insert(0, "/kaggle/working/project")
+os.chdir("/kaggle/working/project")
+
+from pyngrok import ngrok
+import uvicorn
+import nest_asyncio
+
+# Start ngrok tunnel
+tunnel = ngrok.connect(8000)
+PUBLIC_URL = tunnel.public_url
+
+print("=" * 60)
+print(f"  PUBLIC URL: {PUBLIC_URL}")
+print("=" * 60)
+print()
+print("Open the URL above in your browser to use the application.")
+print("Press STOP (■) in the notebook toolbar to shut down.")
+
+nest_asyncio.apply()
+uvicorn.run(
+    "app:app",
+    host="0.0.0.0",
+    port=8000,
+    timeout_keep_alive=1200,
+    log_level="info",
+)
+
+========================================================================
+  END OF KAGGLE NOTEBOOK SETUP
+========================================================================

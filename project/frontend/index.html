@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <h1>Video Generator</h1>
+      <p>Movie + Voice-over + Scene JSON &rarr; Synchronised MP4</p>
+    </header>
+
+    <!-- ───── Step 1 – Drive link ───── -->
+    <section id="step-download" class="step active">
+      <div class="step-head">
+        <span class="badge">1</span>
+        <h3>Enter Google Drive Link</h3>
+      </div>
+      <div class="step-body">
+        <p class="hint">
+          Provide a link to a Drive folder or file containing your
+          <strong>movie (MP4)</strong> and <strong>voice-over (MP3)</strong>.
+        </p>
+        <div class="row">
+          <input type="text" id="drive-link"
+                 placeholder="https://drive.google.com/drive/folders/…  or  https://drive.google.com/file/d/…"
+                 autofocus>
+          <button id="btn-process" class="btn btn-primary">Process</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── Progress ───── -->
+    <section id="step-progress" class="step">
+      <div class="step-head">
+        <span class="badge badge-progress">&infin;</span>
+        <h3>Processing</h3>
+      </div>
+      <div class="step-body">
+        <div class="progress-wrap">
+          <div class="bar-track">
+            <div class="bar-fill" id="progress-fill"></div>
+          </div>
+          <div class="bar-labels">
+            <span id="progress-pct">0%</span>
+            <span id="progress-msg">Initialising…</span>
+          </div>
+        </div>
+        <div class="log-box">
+          <div class="log-title">Log</div>
+          <div id="log-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── Step 2 – Transcript ready ───── -->
+    <section id="step-transcript" class="step">
+      <div class="step-head">
+        <span class="badge badge-success">&#10003;</span>
+        <h3>Transcript Ready</h3>
+      </div>
+      <div class="step-body">
+        <p>The voice-over has been transcribed.</p>
+        <button id="btn-dl-transcript" class="btn btn-secondary">
+          Download Transcript JSON
+        </button>
+      </div>
+    </section>
+
+    <!-- ───── Step 3 – Upload Scene JSON ───── -->
+    <section id="step-scene" class="step">
+      <div class="step-head">
+        <span class="badge">2</span>
+        <h3>Upload Scene JSON</h3>
+      </div>
+      <div class="step-body">
+        <p class="hint">
+          Upload the <strong>Scene JSON</strong> file that maps voice-over
+          timestamps to movie timestamps.  This file is provided externally.
+        </p>
+        <div class="row">
+          <input type="file" id="scene-file" accept=".json">
+          <button id="btn-upload" class="btn btn-primary">Upload &amp; Render</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── Step 4 – Done ───── -->
+    <section id="step-done" class="step">
+      <div class="step-head">
+        <span class="badge badge-success">&#10003;</span>
+        <h3>Complete</h3>
+      </div>
+      <div class="step-body">
+        <div class="success-block">
+          <div class="success-icon">&#10003;</div>
+          <p class="success-text">Video Created Successfully</p>
+        </div>
+        <button id="btn-dl-video" class="btn btn-primary btn-block">
+          Download Final Video (MP4)
+        </button>
+      </div>
+    </section>
+
+    <!-- ───── Error ───── -->
+    <section id="step-error" class="step">
+      <div class="step-head error-head">
+        <span class="badge badge-error">&times;</span>
+        <h3>Error</h3>
+      </div>
+      <div class="step-body">
+        <div class="error-msg" id="error-msg"></div>
+        <button id="btn-retry" class="btn btn-secondary btn-block">Retry</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

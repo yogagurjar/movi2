@@ -1,0 +1,18 @@
+# Runtime generated directories
+project/downloads/
+project/transcript/
+project/scene_json/
+project/screenshots/
+project/output/
+project/temp/
+
+# Python
+__pycache__/
+*.py[cod]
+.env
+venv/
+.venv/
+
+# OS
+Thumbs.db
+.DS_Store
