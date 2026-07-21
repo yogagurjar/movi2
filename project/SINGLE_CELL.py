@@ -15,6 +15,7 @@ PROJ = Path("/kaggle/working/project")
 if not PROJ.exists():
     subprocess.run(["git", "clone", REPO, str(PROJ)], check=True)
 os.chdir(str(PROJ))
+sys.path.insert(0, str(PROJ))
 
 # ── Install dependencies ────────────────────────────────────
 subprocess.run([sys.executable, "-m", "pip", "install", "-q",
