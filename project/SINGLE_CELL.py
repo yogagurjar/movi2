@@ -1,35 +1,34 @@
 # ============================================================
 # VIDEO GENERATOR — Single Kaggle Cell
 # ============================================================
-# 1. Clone repo
-# 2. Install dependencies
-# 3. Run server with Ngrok
-# ============================================================
-
 import subprocess, sys, os, asyncio
 from pathlib import Path
 
-# ── Clone repo ──────────────────────────────────────────────
+BASE = Path("/kaggle/working")
 REPO = "https://github.com/yogagurjar/movi2.git"
-PROJ = Path("/kaggle/working/project")
-if not PROJ.exists():
-    subprocess.run(["git", "clone", REPO, str(PROJ)], check=True)
+
+# Clone repo
+if not (BASE / "movi2_repo").exists():
+    subprocess.run(["git", "clone", REPO, str(BASE / "movi2_repo")], check=True)
+
+# Real project is inside movi2_repo/project/
+PROJ = BASE / "movi2_repo" / "project"
 os.chdir(str(PROJ))
 sys.path.insert(0, str(PROJ))
 
-# ── Install dependencies ────────────────────────────────────
+# Install dependencies
 subprocess.run([sys.executable, "-m", "pip", "install", "-q",
     "fastapi", "uvicorn", "python-multipart", "gdown",
     "openai-whisper", "pyngrok", "nest-asyncio"], check=True)
 subprocess.run(["ffmpeg", "-version"], capture_output=True, check=True)
 print("Dependencies OK")
 
-# ── Start server ────────────────────────────────────────────
+# Start server
 import uvicorn, nest_asyncio
 from pyngrok import ngrok
 
 # ═════════════════════════════════════════════════════════════
-# >>>  PASTE YOUR NGROK AUTH TOKEN BELOW  <<<
+# >>>  PASTE YOUR NGROK AUTH TOKEN HERE  <<<
 # ═════════════════════════════════════════════════════════════
 NGROK_AUTH_TOKEN = ""
 
@@ -37,7 +36,6 @@ if NGROK_AUTH_TOKEN:
     ngrok.set_auth_token(NGROK_AUTH_TOKEN)
 
 nest_asyncio.apply()
-
 tunnel = ngrok.connect(8000)
 print("=" * 60)
 print(f"  PUBLIC URL: {tunnel.public_url}")
