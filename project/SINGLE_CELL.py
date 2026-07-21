@@ -1,12 +1,12 @@
 # ============================================================
-# VIDEO GENERATOR — Single Kaggle Cell (Git Clone Version)
+# VIDEO GENERATOR — Single Kaggle Cell
 # ============================================================
 # 1. Clone repo
 # 2. Install dependencies
 # 3. Run server with Ngrok
 # ============================================================
 
-import subprocess, sys, os
+import subprocess, sys, os, asyncio
 from pathlib import Path
 
 # ── Clone repo ──────────────────────────────────────────────
@@ -23,23 +23,26 @@ subprocess.run([sys.executable, "-m", "pip", "install", "-q",
 subprocess.run(["ffmpeg", "-version"], capture_output=True, check=True)
 print("Dependencies OK")
 
-# ── Set Ngrok token & run ──────────────────────────────────
-from pyngrok import ngrok
+# ── Start server ────────────────────────────────────────────
 import uvicorn, nest_asyncio
+from pyngrok import ngrok
 
-# ═══════════════════════════════════════════════════════════
-# >>>  PASTE YOUR NGROK AUTH TOKEN HERE  <<<
-# ═══════════════════════════════════════════════════════════
+# ═════════════════════════════════════════════════════════════
+# >>>  PASTE YOUR NGROK AUTH TOKEN BELOW  <<<
+# ═════════════════════════════════════════════════════════════
 NGROK_AUTH_TOKEN = ""
 
 if NGROK_AUTH_TOKEN:
     ngrok.set_auth_token(NGROK_AUTH_TOKEN)
+
+nest_asyncio.apply()
 
 tunnel = ngrok.connect(8000)
 print("=" * 60)
 print(f"  PUBLIC URL: {tunnel.public_url}")
 print("=" * 60)
 
-nest_asyncio.apply()
-uvicorn.run("app:app", host="0.0.0.0", port=8000,
-            timeout_keep_alive=1200, log_level="info")
+config = uvicorn.Config("app:app", host="0.0.0.0", port=8000,
+                        timeout_keep_alive=1200, log_level="info")
+server = uvicorn.Server(config)
+await server.serve()
